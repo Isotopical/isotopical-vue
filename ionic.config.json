@@ -1,0 +1,7 @@
+{
+  "name": "isotopical-vue",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
