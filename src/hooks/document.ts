@@ -15,28 +15,31 @@ const state = reactive<{
 
 export default function () {
   const getDocument = async (_collection: string, _name = "index") => {
-    state.loading = true;
-
     if (_name === "") _name = "index";
+    const documentKey = `${_collection}:${_name}`;
 
-    axios
-      .get(`assets/collections/${_collection}/${_name}.md`)
-      .then((response) => {
-        state.error = null;
+    if(!state.documents.has(documentKey)) {
+      state.loading = true;
 
-        const data = fm<any>(response.data);
-        const document: Document = {
-          attributes: data.attributes,
-          body: data.body,
-        };
-        state.documents.set(`${_collection}:${_name}`, document);
-      })
-      .catch((error) => {
-        state.error = error;
-      })
-      .finally(() => {
-        state.loading = false;
-      });
+      axios
+        .get(`assets/collections/${_collection}/${_name}.md`)
+        .then((response) => {
+          state.error = null;
+
+          const data = fm<any>(response.data);
+          const document: Document = {
+            attributes: data.attributes,
+            body: data.body,
+          };
+          state.documents.set(documentKey, document);
+        })
+        .catch((error) => {
+          state.error = error;
+        })
+        .finally(() => {
+          state.loading = false;
+        });
+    }
   };
 
   return {

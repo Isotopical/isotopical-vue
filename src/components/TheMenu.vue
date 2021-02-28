@@ -45,21 +45,7 @@ export default defineComponent({
 
       return "";
     };
-    /*{
-      link(href: string, title: string, text: string) {
-        menuItems.push({
-          label: text,
-          link: href
-        });
-
-        return `
-          <menu-button router-link="${ href }">${ text }</menu-button>
-        `;
-      },
-      text(text: string) { return text },
-      paragraph(text: string) { return text }
-    });*/
-
+    
     getDocument("site", "menu");
 
     watchEffect(() => {
