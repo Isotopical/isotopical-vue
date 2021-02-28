@@ -1,28 +1,20 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
-import { RouteRecordRaw } from 'vue-router';
-import Home from '../views/Home.vue'
+import { createRouter, createWebHistory } from "@ionic/vue-router";
+import { RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "",
+    redirect: "/site/home",
   },
   {
-    path: '/:collection/',
-    name: 'Collection',
-    component: Home
+    path: "/:collection/:document?",
+    component: () => import("../views/Document.vue"),
   },
-  {
-    path: '/:collection/:name/',
-    name: 'Document',
-    component: Home
-  }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
