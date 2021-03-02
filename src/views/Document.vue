@@ -2,32 +2,33 @@
   <ion-page>
     <the-menu />
     <ion-content :fullscreen="true">
-      <span v-html="mdContent"></span>
+      <post-layout :content="content" />
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {
-  IonContent,
-  IonPage,
-} from "@ionic/vue";
-import TheMenu from "../components/TheMenu.vue";
-import { defineComponent, watch, ref } from "vue";
+import { IonContent, IonPage } from "@ionic/vue";
+import { defineComponent, ref, watch, watchEffect } from "vue";
 import { useRoute } from "vue-router";
+
+import TheMenu from "../components/TheMenu.vue";
+import PostLayout from "../layouts/PostLayout.vue";
 import useDocument from "../hooks/document";
+import Document from "../models/Document";
 
 export default defineComponent({
-  name: "Home",
+  name: "Document",
   components: {
     IonContent,
     IonPage,
     TheMenu,
+    PostLayout,
   },
   setup() {
     const route = useRoute();
-    const { getDocument } = useDocument();
-    const mdContent = ref("");
+    const { getDocument, documents } = useDocument();
+    const content = ref<Document>();
 
     const fetchDocument = (_params: any) => {
       const collection = _params.collection as string;
@@ -45,8 +46,18 @@ export default defineComponent({
       }
     );
 
+    watchEffect(() => {
+      const collection = route.params.collection as string;
+      const document = route.params.document as string || "index";
+      
+      const _document: Document | undefined = documents.value.get(`${ collection }:${ document }`);
+      if (_document) {
+        content.value = _document;
+      }
+    });
+
     return {
-      mdContent,
+      content,
     };
   },
 });
