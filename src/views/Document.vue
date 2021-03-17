@@ -2,7 +2,7 @@
   <ion-page>
     <the-menu />
     <ion-content :fullscreen="true">
-      <post-layout :content="content" />
+      <post-layout v-if="content?.attributes?.layout === 'post_layout'" :content="content" />
     </ion-content>
   </ion-page>
 </template>
